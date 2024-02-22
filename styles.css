@@ -33,6 +33,17 @@ section{
     margin: 0 auto;
 }
 
+.container.initial .brand {
+    font-size: 6rem; 
+}
+.container.initial form {
+    max-width: 800px; 
+}
+.container.initial form input {
+    font-size: 2rem; 
+}
+
+/* Logo */
 .brand{
     text-align: center;
     font-size: 4rem;
@@ -40,6 +51,7 @@ section{
     margin-bottom: 30px;
 }
 
+/* Search Bar */
 form{
     width: 90%; 
     max-width: 400px;
@@ -47,7 +59,6 @@ form{
     background-color: rgb(223, 223, 223);
     border-radius: 5px;
 }
-
 form input {
     width: 90%;
     background-color: transparent; 
@@ -57,13 +68,52 @@ form input {
     font-size: 1.5rem;
     display: inline-block;
 }
-
 form ion-icon{
     width: 9%; 
     font-size: 2rem;
     margin: -6px;
 }
 
+/* Dropdown Menu */
+.dropdown {
+    transition: all 0.2s ease-in-out;
+    width: 320px; 
+    overflow: hidden; 
+    max-width: 400px;
+    margin: 20px auto; 
+    background-color: rgb(223, 223, 223);
+    border-radius: 5px;
+    font-size: 15px; 
+    cursor: pointer;
+}
+
+.dropdown h2 {
+    display: flex; 
+    justify-content: space-between;
+    padding: 10px
+}
+
+.menu li {
+    padding: 10px; 
+    font-size: 20px; 
+    border-top: solid 1px rgb(202, 202, 202);
+}
+
+.menu {
+    height: 200px; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.dropdown.closed .menu {
+   display: none; 
+}
+.dropdown.closed .icon span {
+    transform: rotate(180deg);
+}
+
+/* Search Results */
 .search-result {
     margin-top: 50px; 
     width: 100%; 
@@ -86,10 +136,15 @@ form ion-icon{
     border-radius: 4px;
 }
 
-.item .flex-container{
+.item .top-flex-container{
     display: flex; 
     align-items: center;
     justify-content: space-between;
+}
+
+.item .bottom-flex-container{
+    display: flex; 
+    align-items: start; 
 }
 
 .item .title{
@@ -99,8 +154,7 @@ form ion-icon{
     font-weight: 400; 
 }
 
-/* Change to Rating? */
-.view-button{
+/* .view-button{
     text-decoration: none; 
     text-align: center; 
     width: 130px; 
@@ -110,6 +164,12 @@ form ion-icon{
     font-size: 1.4rem; 
     margin-top: 10px; 
     align-self: flex-start
+} */
+
+.liked-movies {
+    font-size: 2rem; 
+    color: whitesmoke;
+    margin: -6px; 
 }
 
 .item-data{
@@ -121,13 +181,16 @@ form ion-icon{
     line-height: 2rem;
 }
 
+/* Stars */
 .rating-button{
     background-color: transparent;
     border: none; 
+    padding: 5px 0 0 5px; 
 }
 
 .rating-button ion-icon{
     color: whitesmoke;
+    font-size: 1.5rem; 
 }
 
 
