@@ -1,6 +1,7 @@
 const searchForm = document.querySelector('form'); 
 const searchBarDiv = document.querySelector('.search-result'); 
-const container = document.querySelector('.container')
+const container = document.querySelector('.container'); 
+const myList = document.querySelector("#my-list-button"); 
 let searchInput = ''; 
 let dropdown = document.querySelector('.dropdown'); 
 
@@ -28,44 +29,85 @@ async function fetchAPI () {
 }
 
 function generateHTML(results) {
-    container.classList.remove('initial'); 
-    // let generatedHTML = ''; 
+    container.classList.remove('initial');  
     searchBarDiv.innerHTML = ``; 
-    const imgURL = "http://image.tmdb.org/t/p/original/"
     results.forEach(result => {
-        // generatedHTML +=
-        // `
-        // <div class="item">
-        //     <img src="${!result.poster_path ? "./Sad photo icon.jpeg" : imgURL + result.poster_path}" alt="poster">
-        //     <div class="top-flex-container">
-        //         <h1 class="title">${!result.title ? result.name : result.title}</h1>
-        //         <a class="liked-movies" href="#"><ion-icon name="heart-outline"></ion-icon></a>
-        //     </div>
-        //     <div class="bottom-flex-container">
-        //         <p class="item-data">Rating: </p>
-        //         <a href="#" class="rating-button">
-        //             <ion-icon name="star-outline"></ion-icon>
-        //         </a>
-        //         <a href="#" class="rating-button">
-        //             <ion-icon name="star-outline"></ion-icon>
-        //         </a>
-        //         <a href="#" class="rating-button">
-        //             <ion-icon name="star-outline"></ion-icon>
-        //         </a>
-        //         <a href="#" class="rating-button">
-        //             <ion-icon name="star-outline"></ion-icon>
-        //         </a>
-        //         <a href="#" class="rating-button">
-        //             <ion-icon name="star-outline"></ion-icon>
-        //         </a>
-        //     </div>
-        //     <p class="item-data">Date: ${!result.first_air_date ? result.release_date : result.first_air_date}</p>
-        // </div>
-        // `
-        const item = document.createElement('div');
-        item.className = 'item'; 
+        addMovieToDOM(result); 
+    }); 
+    // searchBarDiv.innerHTML = generatedHTML; 
+    // searchBarDiv.appendChild(item);
+    console.log(searchBarDiv)
+}
+
+dropdown.addEventListener('click', (e) => {
+    dropdown.classList.contains('closed') ? dropdown.classList.remove('closed') : dropdown.classList.add('closed'); 
+}); 
+myList.addEventListener('click', displayLikedMovies)
+
+function displayLikedMovies() {
+    searchBarDiv.innerHTML = ''; 
+    const moviesFromStorage = getMovieFromStorage(); 
+    moviesFromStorage.forEach((movie) => addMovieToDOM(movie)); 
+}
+
+function getMovieFromStorage(movie) {
+    let likedMovies; 
+    if (localStorage.getItem('items') === null) {
+        likedMovies = []; 
+    } else {
+        likedMovies = JSON.parse(localStorage.getItem('items'))
+    }
+
+    return likedMovies; 
+}
+
+function addMovieToStorage(movie) {
+    let likedMovies; 
+    if (localStorage.getItem('items') === null) {
+        likedMovies = []; 
+    } else {
+        likedMovies = JSON.parse(localStorage.getItem('items'))
+    }
+
+    // Add new movie to array 
+    likedMovies.push(movie); 
+
+    // Convert to JSON String and set to local storage
+    localStorage.setItem('items', JSON.stringify(likedMovies)); 
+}
+
+function removeMovieFromStorage(movie) {
+    let likedMovies = getMovieFromStorage(movie); 
+
+    // Find the index of the movie in the likedMovies array
+    const index = likedMovies.findIndex(item => item.id === movie.id);
+
+    // If the movie is found, remove it from the array
+    if (index !== -1) {
+        likedMovies.splice(index, 1);
+    }
+
+    // Update local storage with the modified array
+    localStorage.setItem('items', JSON.stringify(likedMovies));
+}
+
+function isMovieLiked(movie) {
+    const likedMovies = JSON.parse(localStorage.getItem('items')) || []; 
+    for (let i = 0; i < likedMovies.length; i++) {
+        if (likedMovies[i].id === movie.id) {
+            return true; // Found a match, movie is liked
+        }
+    }
+    return false; // No match found, movie is not liked
+}
+
+function addMovieToDOM(result) {
+    const imgURL = "http://image.tmdb.org/t/p/original/"
+
+    const item = document.createElement('div');
+    item.className = 'item'; 
         
-        const image = document.createElement('img'); 
+    const image = document.createElement('img'); 
         image.src = !result.poster_path ? "./Sad photo icon.jpeg" : imgURL + result.poster_path
 
         const topContainer = document.createElement('div'); 
@@ -122,10 +164,12 @@ function generateHTML(results) {
         searchBarDiv.appendChild(item); 
         // console.log(searchBarDiv); 
 
-        // let isHeartFilled = false;
         let isHeartFilled = isMovieLiked(result);  
 
+        heart.innerHTML = isHeartFilled ? `<ion-icon name="heart"></ion-icon>` : `<ion-icon name="heart-outline"></ion-icon>`;
+
         heart.addEventListener('click', () => {
+            // let isHeartFilled = isMovieLiked(result);  
             isHeartFilled = !isHeartFilled; 
             heart.innerHTML = isHeartFilled ? `<ion-icon name="heart"></ion-icon>` : `<ion-icon name="heart-outline"></ion-icon>`; 
             if (isHeartFilled) {
@@ -134,57 +178,4 @@ function generateHTML(results) {
                 removeMovieFromStorage(result); 
             }
         }); 
-    }); 
-    // searchBarDiv.innerHTML = generatedHTML; 
-    // searchBarDiv.appendChild(item);
-    console.log(searchBarDiv)
-}
-
-dropdown.addEventListener('click', (e) => {
-    dropdown.classList.contains('closed') ? dropdown.classList.remove('closed') : dropdown.classList.add('closed'); 
-}); 
-
-function addMovieToStorage(movie) {
-    let likedMovies; 
-    if (localStorage.getItem('items') === null) {
-        likedMovies = []; 
-    } else {
-        likedMovies = JSON.parse(localStorage.getItem('items'))
-    }
-
-    // Add new movie to array 
-    likedMovies.push(movie); 
-
-    // Convert to JSON String and set to local storage
-    localStorage.setItem('items', JSON.stringify(likedMovies)); 
-}
-
-function removeMovieFromStorage(movie) {
-    let likedMovies;
-    if (localStorage.getItem('items') === null) {
-        return; // If local storage is empty, nothing to remove
-    } else {
-        likedMovies = JSON.parse(localStorage.getItem('items'));
-    }
-
-    // Find the index of the movie in the likedMovies array
-    const index = likedMovies.findIndex(item => item.id === movie.id);
-
-    // If the movie is found, remove it from the array
-    if (index !== -1) {
-        likedMovies.splice(index, 1);
-    }
-
-    // Update local storage with the modified array
-    localStorage.setItem('items', JSON.stringify(likedMovies));
-}
-
-function isMovieLiked(movie) {
-    const likedMovies = JSON.parse(localStorage.getItem('items')) || []; 
-    for (let i = 0; i < likedMovies.length; i++) {
-        if (likedMovies[i].id === movie.id) {
-            return true; // Found a match, movie is liked
-        }
-    }
-    return false; // No match found, movie is not liked
 }

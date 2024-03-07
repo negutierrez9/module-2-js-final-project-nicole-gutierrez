@@ -17,9 +17,9 @@
             <div class="dropdown closed">
                 <h2 class="icon">Filter <span><ion-icon name="chevron-down"></ion-icon></span></h2>
                 <ul class="menu">
-                    <li><a href="#">My List</a></li>
-                    <li><a href="#">Best Of</a></li>
-                    <li><a href="#">Worst Of</a></li>
+                    <li><a id="my-list-button" href="#">My List</a></li>
+                    <li><a id="best-of-button" href="#">Best Of</a></li>
+                    <li><a id="worst-of-button" href="#">Worst Of</a></li>
                 </ul>
             </div>
             <div class="search-result">
@@ -47,3 +47,34 @@
     <script src="./main.js"></script>
 </body>
 </html>
+
+
+<!-- // generatedHTML +=
+// `
+// <div class="item">
+//     <img src="${!result.poster_path ? "./Sad photo icon.jpeg" : imgURL + result.poster_path}" alt="poster">
+//     <div class="top-flex-container">
+//         <h1 class="title">${!result.title ? result.name : result.title}</h1>
+//         <a class="liked-movies" href="#"><ion-icon name="heart-outline"></ion-icon></a>
+//     </div>
+//     <div class="bottom-flex-container">
+//         <p class="item-data">Rating: </p>
+//         <a href="#" class="rating-button">
+//             <ion-icon name="star-outline"></ion-icon>
+//         </a>
+//         <a href="#" class="rating-button">
+//             <ion-icon name="star-outline"></ion-icon>
+//         </a>
+//         <a href="#" class="rating-button">
+//             <ion-icon name="star-outline"></ion-icon>
+//         </a>
+//         <a href="#" class="rating-button">
+//             <ion-icon name="star-outline"></ion-icon>
+//         </a>
+//         <a href="#" class="rating-button">
+//             <ion-icon name="star-outline"></ion-icon>
+//         </a>
+//     </div>
+//     <p class="item-data">Date: ${!result.first_air_date ? result.release_date : result.first_air_date}</p>
+// </div>
+// ` -->
